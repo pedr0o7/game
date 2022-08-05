@@ -1,0 +1,72 @@
+<canvas id="canvas" width=600 height="600" style="border:1px solid rgb(15, 129, 129)"></canvas>
+<script src="retangulo.js"></script>
+<script>
+    const canvas=document.getElementById("canvas");
+    const ctx=canvas.getContext("2d");
+    let ret=new Retangulo(0,0,150,50,"red");
+    let retGreen = new Retangulo(50,50,50,20,"green");
+
+    const components=[]
+    components.push(ret);
+    components.push(retGreen);
+
+    function update(){
+        //ret.y+=10;
+        //retGreen.y+=5;
+        if (ret.y == 600)
+        {
+            ret.y=-150;
+        }
+        if (retGreen.y == 600)
+        {
+            retGreen.y=-150;
+        }
+        for(const obj of components){
+            obj.update();
+        }
+    }
+    function draw(){
+        ctx.clearRect(0,0,600,600)
+        for(const obj of components){
+            obj.draw(ctx);
+        }
+    }
+
+    const teclas=[];
+
+    window.addEventListener("keydown",(e)=>{
+        teclas[e.keyCode]=true;
+    });
+
+    window.addEventListener("keyup",(e)=>{
+        teclas[e.keyCode]=false;
+    });
+
+    function inputs(){
+        ret.vx=0;
+        ret.vy=0;
+        if(teclas[37]){ //seta esquerda
+            ret.vx=-1
+        }
+        if(teclas[38]){ //seta baixo
+            ret.vy=-1
+        }
+        if(teclas[39]){ //seta direita
+            ret.vx=1
+        }
+        if(teclas[40]){ //seta cima
+            ret.vy=1
+        }
+        if(teclas[32]){
+            ret.ang=90
+        }
+    }
+
+    function gameloop(){
+        inputs();
+        update();
+        draw();
+
+    }
+    setInterval(gameloop,33);
+</script>
